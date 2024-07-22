@@ -10,6 +10,7 @@ const Cart = (props) => {
         <CartItem
           item={{ title: 'Test Item', quantity: 3, total: 18, price: 6 }}
         />
+       
       </ul>
     </Card>
   );
