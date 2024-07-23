@@ -10,6 +10,7 @@ const cartReducer = (state = initialCartState, action) => {
       };
     case "ADD_CART":
       // console.log(action.payload, "::::::::::::::::");
+      // console.log(state.cartData,"???????");
       const cartData = [...state.cartData];
       const productIndex = cartData.findIndex(
         (item) => item.title === action.payload.title
@@ -30,6 +31,48 @@ const cartReducer = (state = initialCartState, action) => {
       return {
         ...state,
         cartData,
+      };
+
+    case "INC_ITEM":
+      // console.log(state.cartData,"??36");
+      const items = [...state.cartData];
+
+      const updatedItems = items.map((item) => {
+        if (item.title === action.payload) {
+          const updateItem = {
+            ...item,
+            quantity: item.quantity + 1,
+            total: (item.quantity + 1) * item.price,
+          };
+          return updateItem;
+        } else {
+          return { ...item };
+        }
+      });
+      return {
+        ...state,
+        cartData: updatedItems,
+      };
+
+    case "DEC_ITEM":
+      const cartDatas = [...state.cartData];
+      const updateCart = cartDatas.map((item) => {
+     
+        if (item.title === action.payload) {
+          const updateItem = {
+            ...item,
+            quantity: item.quantity - 1,
+            total: (item.quantity - 1) * item.price,
+          };
+          return updateItem;
+        } else {
+          return { ...item };
+        }
+      }).filter(item => item.quantity > 0)
+
+      return {
+        ...state,
+        cartData: updateCart,
       };
 
     default:
