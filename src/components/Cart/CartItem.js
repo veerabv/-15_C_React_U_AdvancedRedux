@@ -1,5 +1,6 @@
 import classes from './CartItem.module.css';
 import { useDispatch } from 'react-redux';
+import { cartActions } from '../../store';
 
 const CartItem = (props) => {
   const dispatch = useDispatch();
@@ -7,11 +8,11 @@ const CartItem = (props) => {
 
   function handleInc(title){
     // console.log("Tri");
-    dispatch({type:"INC_ITEM" , payload : title})
+    dispatch(cartActions.incItem(title))
   }
 
   function handleDec(title){
-    dispatch({type:"DEC_ITEM" , payload : title})
+    dispatch(cartActions.decItem(title))
 
   }
 
