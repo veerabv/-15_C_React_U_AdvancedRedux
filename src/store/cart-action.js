@@ -16,7 +16,10 @@ export function sendCartData(cart) {
         "https://react-dummy-8e08f-default-rtdb.firebaseio.com/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify(cart),
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity,
+          }), // this is changed because we will not use the isChanged key in database
         }
       );
 
@@ -33,6 +36,10 @@ export function sendCartData(cart) {
           message: "sending cart data Successfully",
         })
       );
+
+      setTimeout(() => {
+        dispatch(uiActions.ShowNotification(null));
+      }, 1000);
     } catch (err) {
       dispatch(
         uiActions.ShowNotification({
@@ -41,6 +48,9 @@ export function sendCartData(cart) {
           message: "sending cart data failed",
         })
       );
+      setTimeout(() => {
+        dispatch(uiActions.ShowNotification(null));
+      }, 1000);
     }
   };
 }
@@ -62,8 +72,12 @@ export function fetchCartData() {
 
     try {
       const cart = await getCart();
-      dispatch(cartActions.replaceCart(cart))
-
+      dispatch(
+        cartActions.replaceCart({          // this is cahnged because we empty the cart , then the items key becomes empty in backend so we give default []  if the key is undefined
+          items: cart.items || [],
+          totalQuantity: cart.totalQuantity,
+        })
+      );
     } catch (err) {
       dispatch(
         uiActions.ShowNotification({
